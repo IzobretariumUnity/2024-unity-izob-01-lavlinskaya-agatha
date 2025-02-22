@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerMove : MonoBehaviour
 {
@@ -11,18 +11,78 @@ public class PlayerMove : MonoBehaviour
     private Rigidbody2D rigidbody2D;
 
     private float speed = 7f;
-    private float jumpFroce = 8f;
+    private float jumpForce = 8f;
 
-    private float moveInpute;
+    private float moveInput;
+    private float defaultSpeed;
+    private float defaultJumpForce;
+
+    //
+    private Button mobileButtonJump;
+    private Joystick mobileJoystick;
+    //
+
+    //
+    private void Start()
+    {
+        FindJoystick();
+        FindMobileButtonJump();
+    }
+    //
+
+    //
+    private void FindJoystick()
+    {
+        GameObject mobileJoystickObject = GameObject.FindGameObjectWithTag("ui_Joystick");
+        mobileJoystick = mobileJoystickObject ? mobileJoystickObject.GetComponent<Joystick>() : null;
+    }
+    //
+
+    //
+    private void FindMobileButtonJump()
+    {
+        GameObject mobileButtonJumpObject = GameObject.FindGameObjectWithTag("ui_ButtonJump");
+        if (mobileButtonJumpObject)
+        {
+            mobileButtonJump = mobileButtonJumpObject.GetComponent<Button>();
+            mobileButtonJump.onClick.AddListener(() =>
+            {
+                Jump();
+            });
+        }
+    }
+
+
+    public void SetJumpForce(float _jumpForce)
+    {
+        jumpForce = _jumpForce;
+    }
+
+    public void SetDefaultJumpForce()
+    {
+        jumpForce = defaultJumpForce;
+    }
+
+    public void SetSpeed(float _speed)
+    {
+        speed = _speed;
+    }
+
+    public void SetDefaultSpeed()
+    {
+        speed = defaultSpeed;
+    }
 
     private void Awake()
     {
         rigidbody2D = GetComponent<Rigidbody2D>();
+        defaultSpeed = speed;
+        defaultJumpForce = jumpForce;
     }
 
     private void FixedUpdate()
     {
-        rigidbody2D.velocity = MoveVelosite();
+        rigidbody2D.velocity = MoveVelocity();
     }
 
     private void Update()
@@ -32,6 +92,7 @@ public class PlayerMove : MonoBehaviour
             Jump();
         }
     }
+
     private Collider2D Ground()
     {
         return Physics2D.OverlapCircle(groundPoint.position, .01f, groundLayer);
@@ -40,15 +101,19 @@ public class PlayerMove : MonoBehaviour
     private void Jump()
     {
         if(Ground())
-        { 
-            rigidbody2D.velocity = Vector2.up * jumpFroce; 
+        {
+            rigidbody2D.velocity = Vector2.up * jumpForce;
         }
-        
     }
 
-    private Vector2 MoveVelosite()
+    private Vector2 MoveVelocity()
     {
-        moveInpute = Input.GetAxis("Horizontal");
-        return new Vector2(moveInpute * speed, rigidbody2D.velocity.y);
+            moveInput = Application.isMobilePlatform ?
+            mobileJoystick.Horizontal :
+            Input.GetAxis("Horizontal");
+
+  //      moveInput = mobileJoystick.Horizontal;
+
+        return new Vector2(moveInput * speed, rigidbody2D.velocity.y);
     }
-}  
+}
