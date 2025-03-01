@@ -34,6 +34,12 @@ public class PlayerMove : MonoBehaviour
     private void FindJoystick()
     {
         GameObject mobileJoystickObject = GameObject.FindGameObjectWithTag("ui_Joystick");
+
+        if (Application.isMobilePlatform == false)
+        {
+            mobileJoystickObject.gameObject.SetActive(false);
+        }
+
         mobileJoystick = mobileJoystickObject ? mobileJoystickObject.GetComponent<Joystick>() : null;
     }
     //
@@ -42,6 +48,12 @@ public class PlayerMove : MonoBehaviour
     private void FindMobileButtonJump()
     {
         GameObject mobileButtonJumpObject = GameObject.FindGameObjectWithTag("ui_ButtonJump");
+
+        if (Application.isMobilePlatform == false)
+        {
+            mobileButtonJumpObject.gameObject.SetActive(false);
+        }
+
         if (mobileButtonJumpObject)
         {
             mobileButtonJump = mobileButtonJumpObject.GetComponent<Button>();
@@ -117,3 +129,4 @@ public class PlayerMove : MonoBehaviour
         return new Vector2(moveInput * speed, rigidbody2D.velocity.y);
     }
 }
+
