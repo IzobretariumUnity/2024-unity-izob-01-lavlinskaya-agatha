@@ -22,15 +22,19 @@ public class PlayerMove : MonoBehaviour
     private Joystick mobileJoystick;
     //
 
+    private PlayerPlayAudio playAudio;
+
     //
     private void Start()
     {
         FindJoystick();
         FindMobileButtonJump();
-    }
-    //
 
-    //
+        playAudio = GetComponent<PlayerPlayAudio>();
+    }
+   
+
+    
     private void FindJoystick()
     {
         GameObject mobileJoystickObject = GameObject.FindGameObjectWithTag("ui_Joystick");
@@ -42,9 +46,7 @@ public class PlayerMove : MonoBehaviour
 
         mobileJoystick = mobileJoystickObject ? mobileJoystickObject.GetComponent<Joystick>() : null;
     }
-    //
-
-    //
+  
     private void FindMobileButtonJump()
     {
         GameObject mobileButtonJumpObject = GameObject.FindGameObjectWithTag("ui_ButtonJump");
@@ -115,6 +117,8 @@ public class PlayerMove : MonoBehaviour
         if(Ground())
         {
             rigidbody2D.velocity = Vector2.up * jumpForce;
+            Debug.Log("move jump");
+            playAudio.PlaySoundJump();
         }
     }
 
@@ -128,5 +132,6 @@ public class PlayerMove : MonoBehaviour
 
         return new Vector2(moveInput * speed, rigidbody2D.velocity.y);
     }
+
 }
 
