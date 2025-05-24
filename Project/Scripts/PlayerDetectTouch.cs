@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerDetectTouch : MonoBehaviour
 {
@@ -20,18 +21,17 @@ public class PlayerDetectTouch : MonoBehaviour
             playerHealth.PullUp();
             Destroy(other.gameObject);
         }
-    }
 
-    /*
-    private void OnTriggerExit2D(Collider2D other)
-    {
-        if (other.gameObject.CompareTag("TriggerExample"))
+        if (other.gameObject.CompareTag("LoadNextLevel"))
         {
-            Debug.Log("Trigger Exit");
+            SceneManager.LoadScene("Circle Move 2");
         }
 
+        if (other.gameObject.CompareTag("LoadNextLevel2"))
+        {
+            SceneManager.LoadScene("Circle Move 3");
+        }
     }
-    */
 
     private void OnCollisionEnter2D(Collision2D other)
     {

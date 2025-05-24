@@ -13,12 +13,17 @@ public class MenuButtons : MonoBehaviour
 
     public void Play2()
     {
-        SceneManager.LoadScene("Circle Move");
+        SceneManager.LoadScene("Circle Move 2");
     }
 
     public void Play3()
     {
-        SceneManager.LoadScene("Circle Move");
+        SceneManager.LoadScene("Circle Move 3");
+    }
+
+    public void Play4()
+    {
+        SceneManager.LoadScene("CollicionDetech");
     }
 
     public void Quit()
